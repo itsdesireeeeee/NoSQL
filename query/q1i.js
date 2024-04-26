@@ -1,13 +1,17 @@
 // Task 1i
 
 db.keywords.aggregate([
-    // TODO: Write your query here
+    // TODO: DONE
     {$match:
-        { "keywords.name": { $in:["marvel comic", "mickey mouse"]}}
+        {$or:[
+            { keywords: { $elemMatch:{ name: "marvel comic"}}} ,
+            { keywords: { $elemMatch:{name: "mickey mouse"}}}
+            ]
+        }
     },
     { $sort: { movieId: 1}
     },
-    { $project: {"movieId": 1} //not sure if i need "keywords": 0
+    { $project: {"movieId": 1, "_id": 0} //need to explicitly project out _id field
     }
 
 ]);
