@@ -1,9 +1,16 @@
 // Task 3i
 
 db.credits.aggregate([
-    // TODO: Write your query here
-    {$match: {cast: {$elemMatch: {id: 7624}}}},
-    {$project: {cast: 1}}
+    // TODO: DONE
+    {$unwind: "$cast"},
+    {$match: {"cast.id": 7624}},
+    {$project: {"cast.id": 1, movieId: 1, "cast.character": 1}},
+    {$lookup: {from: "movies_metadata", localField: "movieId",
+                foreignField: "movieId", as:"movie"}},
+    {$unwind: "$movie"},
+    {$project: {_id: 0, title:"$movie.title",
+    release_date:"$movie.release_date", character: "$cast.character"}},
+    {$sort: {release_date: -1}}
 
 
 ]);
@@ -13,11 +20,3 @@ db.credits.aggregate([
 //Find the release date, title, and the name of the character Lee played.
 //Order the results in descending order of release date.
 //output documents should title, release date, character
-
-
- //{$lookup: {from: "credits", localField: "movieId",
-            //foreignField: "movieId", as:"cast"}}, // join
-  //{$unwind: "$cast"},
-  //{$match: {"cast.id": 7624}},
-  //{$project: {_id:0, release_date:1, title: 1, character: "$cast.character"}},
-  //{$limit: 5}
