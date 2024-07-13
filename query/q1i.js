@@ -1,4 +1,6 @@
 // Task 1i
+// Find the IDs of all movies labeled with the keyword "mickey mouse" or "marvel comic" by writing a query on the keywords collection. 
+// Order your output in ascending order of movieId. The output documents should have the following fields:  {"movieId": <number>}
 
 db.keywords.aggregate([
     // TODO: DONE
